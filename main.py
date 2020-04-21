@@ -1,4 +1,5 @@
 import random
+from binascii import unhexlify
 
 
 # true if a number is prime, false otherwise
@@ -67,7 +68,7 @@ def decrypt(C, d, n):
     return M
 
 
-# fonction of exercise 1
+# function of exercise 1
 def exercise1():
     message = "110100110110111"
     chiffre = int(message, 2)  # convert the binary string to int
@@ -85,6 +86,30 @@ def exercise1():
     '''print("Verification :")
     print(C, 'decrypted equals to', D)
     print(D, 'equals to', "{0:b}".format(D), '(from int to binary string)')  # "{0:b}".format(D) allows to convert int to binary'''
+
+
+# get p and q with n
+def factorisation(n):
+    p = n - 2
+    while n % p != 0:
+        p = p - 2  # 2 by 2 -> faster
+    q = int(n / p)
+    return p, q
+
+
+# function of exercise 2
+def exercise2():
+    ciphertext = 468
+    n = 11
+    e = 899
+    p, q = factorisation(n)
+    phiN = p*q
+    d = getD(e, phiN)
+    print('p =', p, 'q =', q, 'phiN =', phiN, 'd =', d)
+    print('encrypted message :', ciphertext)
+    M = decrypt(ciphertext, d, n)
+    print('decrypted message :', M)
+
 
 
 '''
@@ -106,7 +131,8 @@ We can conclude with : pow(c1,u) * pow(c2,v) = m mod n
 
 
 def main():
-    exercise1()
+    # exercise1()
+    exercise2()
 
 
 if __name__ == "__main__":
