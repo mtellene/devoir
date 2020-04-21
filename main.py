@@ -44,13 +44,24 @@ def function1():
     e = 5
     return p, q, n, phiN, e
 
+# compute the private key d
+def getD(e, phiN):
+    r, u, v, r1, u1, v1 = e, 1, 0, phiN, 0, 1
+    while r1:  # while r1 !=0
+        q = r // r1
+        r, r1 = r1, r - q * r1  # r take r1 value
+        u, u1 = u1, u - q * u1  # u take u1 value
+        v, v1 = v1, v - q * v1  # v take v1 value
+    return u % phiN
+
 
 def exercise1():
     p, q, n, phiN, e = function1()
     while pgcd(e, phiN) != 1:   # pgcd(e, phiN) must be 1
         print("FALSE")
         p, q, n, phiN, e = function1()
-    print('p =', p, ' q =', q, 'n =', n, ' phiN =', phiN, ' e =', e)
+    d = getD(e, phiN)
+    print('p =', p, ' q =', q, 'n =', n, ' phiN =', phiN, ' e =', e, ' d =', d)
 
 
 def main():
