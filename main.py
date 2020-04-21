@@ -34,15 +34,15 @@ def getPAndQ():
 
 
 # get p and q and find n, phiN and e
-def function1():
+def function1(chiffre):
     p, q = getPAndQ()
-    while p == q:
-        print(p, '==', q)
+    while p == q or chiffre >= p * q:
         p, q = getPAndQ()
     n = p * q
     phiN = (p - 1) * (q - 1)
     e = 5
     return p, q, n, phiN, e
+
 
 # compute the private key d
 def getD(e, phiN):
@@ -55,13 +55,36 @@ def getD(e, phiN):
     return u % phiN
 
 
+# encrypt message
+def encrypt(chiffre, e, n):
+    C = pow(chiffre, e, n)
+    return C
+
+
+# decrypt a message
+def decrypt(C, d, n):
+    M = pow(C, d, n)
+    return M
+
+
+# fonction of exercise 1
 def exercise1():
-    p, q, n, phiN, e = function1()
-    while pgcd(e, phiN) != 1:   # pgcd(e, phiN) must be 1
-        print("FALSE")
-        p, q, n, phiN, e = function1()
+    message = "110100110110111"
+    chiffre = int(message, 2)  # convert the binary string to int
+
+    p, q, n, phiN, e = function1(chiffre)
+    while pgcd(e, phiN) != 1:  # pgcd(e, phiN) must be 1
+        p, q, n, phiN, e = function1(chiffre)
     d = getD(e, phiN)
     print('p =', p, ' q =', q, 'n =', n, ' phiN =', phiN, ' e =', e, ' d =', d)
+    print("#################")
+    C = encrypt(chiffre, e, n)
+    D = decrypt(C, d, n)
+    print(message, 'equals to', chiffre, '(from binary string to int)')
+    print(chiffre, 'encrypted equals to', C)
+    '''print("Verification :")
+    print(C, 'decrypted equals to', D)
+    print(D, 'equals to', "{0:b}".format(D), '(from int to binary string)')  # "{0:b}".format(D) allows to convert int to binary'''
 
 
 def main():
