@@ -108,7 +108,7 @@ def exercise2():
     print('p =', p, 'q =', q, 'phiN =', phiN, 'd =', d)
     print('encrypted message :', ciphertext)
     M = decrypt(ciphertext, d, n)
-    print('decrypted message :', M)
+    print('decrypted message :', M) 
 
 
 
