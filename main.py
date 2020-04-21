@@ -87,6 +87,24 @@ def exercise1():
     print(D, 'equals to', "{0:b}".format(D), '(from int to binary string)')  # "{0:b}".format(D) allows to convert int to binary'''
 
 
+'''
+Exercise 5 :
+Kp1 (493;3) | e1 = 3 | n1 = 493
+Kp2 (493,5) | e2 = 5 | n2 = 493
+You can say : c1 = pow(m,e1,n1) and c2 = pow(m,e2,n2)
+Moreover gcd(e1,e2) = 1
+
+Thanks to Bachet-Bézout, you can say : e1*u + e2*v = 1, Ǝ(u,v) ∈ ℤ²
+<=> pow(c1,u) mod n + pow(c2,v) mod n   = ((pow(pow(m,e1),u)) mod n + (pow(pow(p,e2),v)) mod n) mod n 
+                                        = pow(m,e1*u + e2*v) mod n
+                                        = m mod n (e1*u + e2*v = 1)
+                                        = m (m<=n)
+
+We can conclude with : pow(c1,u) * pow(c2,v) = m mod n
+                   <=> pow(293,u) * pow(421,v) = m mod 493
+'''
+
+
 def main():
     exercise1()
 
