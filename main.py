@@ -55,6 +55,17 @@ def inv_mod(e, phiN):
     return u % phiN
 
 
+# multiplicative inverse
+def inv_modForExercise5(e, phiN):
+    r, u, v, r1, u1, v1 = e, 1, 0, phiN, 0, 1
+    while r1:  # while r1 !=0
+        q = r // r1
+        r, r1 = r1, r - q * r1  # r take r1 value
+        u, u1 = u1, u - q * u1  # u take u1 value
+        v, v1 = v1, v - q * v1  # v take v1 value
+    return u % phiN, v
+
+
 # encrypt message
 def encrypt(chiffre, e, n):
     C = pow(chiffre, e, n)
@@ -187,7 +198,7 @@ def exercise4():
     print('Kp1 (', n1, ';', e, ') | e =', e, 'n1 =', n1, '| c1 =', c1)
     print('Kp2 (', n2, ';', e, ') \t| e =', e, 'n2 =', n2, ' | c2 =', c2)
     print('Kp3 (', n3, ';', e, ') \t| e =', e, 'n3 =', n3, ' | c3 =', c3)
-    print('--------------------------')
+    print('-------------------------------------------')
     print('Chinese Reminder Theorem :')
     print('X = [a1*m1*pow(M1,-1) + a2*m2*pow(M2,-1) + a3*m3*pow(M3,-1)] mod n1*n2*n3')
     print('Thanks to this theorem we can say that :')
@@ -195,7 +206,7 @@ def exercise4():
     print('<=> c = X')
     print('<=> X = pow(m,e)')
     print('<=> m = pow(X,1.0/e)')
-    print('--------------------------')
+    print('-------------------------------------------')
     m1, m2, m3, modGene = n2 * n3, n1 * n3, n1 * n2, n1 * n2 * n3
     print('m1 =', m1, '; m2 =', m2, '; m3 =', m3)
     print('X = [', c1, '*', m1, '*pow(', m1, ',-1,', n1, ') + ', c2, '*', m2, '*pow(', m2, ',-1,', n2, ') + '
@@ -220,7 +231,7 @@ def exercise4():
     print('X =', a1 + a2 + a3, 'mod', modGene)
     X = pow(a1 + a2 + a3, 1, modGene)
     print('X =', X)
-    print('--------------------------')
+    print('-------------------------------------------')
     print('We said that :')
     print('X = pow(m,3)')
     print('<=> pow(m,3) =', X)
@@ -237,22 +248,76 @@ Kp1 (493;3) | e1 = 3 | n1 = 493
 Kp2 (493,5) | e2 = 5 | n2 = 493
 You can say : c1 = pow(m,e1,n1) and c2 = pow(m,e2,n2)
 Moreover gcd(e1,e2) = 1
-
+-------------------------------------------
 Thanks to Bachet-Bézout, you can say : e1*u + e2*v = 1, Ǝ(u,v) ∈ ℤ²
 <=> pow(c1,u) mod n + pow(c2,v) mod n   = ((pow(pow(m,e1),u)) mod n + (pow(pow(p,e2),v)) mod n) mod n 
                                         = pow(m,e1*u + e2*v) mod n
                                         = m mod n (e1*u + e2*v = 1) 
                                         = m (m<=n)
 
-We can conclude with : pow(c1,u) * pow(c2,v) = m mod n
-                   <=> pow(293,u) * pow(421,v) = m mod 493
+We can conclude with : m = (pow(c1,u) * pow(c2,v)) mod n 
+-------------------------------------------
+To find u and v we have to calculate the multiplicative inverse :
+The formula is : t = t1*(q*t2)
+q   r   r1  r2      t1  t2  t
+1   5   3   2       0   1  -1
+1   3   2   1       1  -1   2
+2   2   1   0      -1   2  -5
+    1   0           2  -5
+    
+Thanks to this we can say u = 2 (last t1) and v = -1 (third t1)
+We can verify with Bachet-Bézout : e1*u + e2*v = 1
+<=> 3*2 + 5*(-1) = 1
+<=> 6 - 5 = 1
+------------------------------------------- 
+Now let's find m :
+m = pow(e1,u) * pow(e2,v) mod n
+<=> m = pow(291,2) + pow(421,-1) mod n
+<=> m = pow(291,2) + 89 mod n
+<=> m = 47
 '''
+
+
+# function for exercise 5
+def exercise5():
+    n = 493
+    e1, e2 = 3, 5
+    c1, c2 = 293, 421
+    print('Kp1 (', n, ';', e1, ') | e1 =', e1, 'n =', n, '| c1 =', c1)
+    print('Kp2 (', n, ';', e2, ') | e2 =', e2, 'n =', n, ' | c2 =', c2)
+    print('-------------------------------------------')
+    if pgcd(e1, e2) != 1:
+        print('Désolé impossible...')
+        return
+    print('Bachet-Bézout :')
+    print('e1*u + e2*v = 1')
+    print('-------------------------------------------')
+    print('We know :')
+    print('c1 = pow(m,e1,n1) | c2 = pow(m,e2,n2)')
+    print('m = (pow(c1,u) * pow(c2,u)) mod n')
+    print('<=> m = (pow(m,e1*u) * pow(m,e2,v)) mod n')
+    print('<=> m = pow(m,e1*u + e2*v) mod n')
+    print('<=> m = pow(m,1) mod n   # e1*u + e2*v = 1')
+    print('<=> m = m                # (m<=n)')
+    print('-------------------------------------------')
+    print('Now we know u, v and m = (pow(c1,u) * pow(c2,v)) mod n')
+    print('So we can compute m')
+    print('m = (pow(c1,u) * pow(c2,v)) mod n')
+    u, v = inv_modForExercise5(e1, e2)
+    print('m = (pow(', c1, ',', u, ') * pow(', c2, ',', v, ')) mod', n)
+    x = inv_mod(c2, n)  # pow(c2,v) because v = -1
+    print('m = (pow(', c1, ',', u, ') *', x, ') mod', n)
+    y = pow(c1, u)
+    print('m = (', y, '*', x, ') mod', n)
+    print('m =', x * y, 'mod', n)
+    print('m =', pow(x * y, 1, n))
 
 
 def main():
     # exercise1()
     # exercise2()
-    exercise4()
+    # exercise4()
+    exercise5()
 
 
 if __name__ == "__main__":
