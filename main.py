@@ -241,7 +241,7 @@ Moreover gcd(e1,e2) = 1
 Thanks to Bachet-Bézout, you can say : e1*u + e2*v = 1, Ǝ(u,v) ∈ ℤ²
 <=> pow(c1,u) mod n + pow(c2,v) mod n   = ((pow(pow(m,e1),u)) mod n + (pow(pow(p,e2),v)) mod n) mod n 
                                         = pow(m,e1*u + e2*v) mod n
-                                        = m mod n (e1*u + e2*v = 1)
+                                        = m mod n (e1*u + e2*v = 1) 
                                         = m (m<=n)
 
 We can conclude with : pow(c1,u) * pow(c2,v) = m mod n
