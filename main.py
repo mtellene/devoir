@@ -24,12 +24,12 @@ def pgcd(a, b):
 
 # generate 2 8-bits prime numbers
 def getPAndQ():
-    p = random.randint(1, pow(2, 8))  # random int between 1 and 2⁸
-    q = random.randint(1, pow(2, 8))  # random int between 1 and 2⁸
+    p = random.randint(1, (pow(2, 8))-1)  # random int between 1 and 2⁸-1
+    q = random.randint(1, (pow(2, 8))-1)  # random int between 1 and 2⁸-1
     while not isPrime(p):  # while p is not prime
-        p = random.randint(1, pow(2, 8))
+        p = random.randint(1, (pow(2, 8))-1)
     while not isPrime(q):  # while q is not prime
-        q = random.randint(1, pow(2, 8))
+        q = random.randint(1, (pow(2, 8))-1)
     return p, q
 
 
@@ -88,7 +88,7 @@ def exercise1():
         p, q, n, phiN, e = function1(chiffre)
     d = inv_mod(e, phiN)
     print('p =', p, ' q =', q, 'n =', n, ' phiN =', phiN, ' e =', e, ' d =', d)
-    print("#################")
+    print('-------------------------------------------')
     C = encrypt(chiffre, e, n)
     D = decrypt(C, d, n)
     print(message, 'equals to', chiffre, '(from binary string to int)')
@@ -110,10 +110,10 @@ def factorisation(n):
 # function of exercise 2
 def exercise2():
     ciphertext = 468
-    n = 11
-    e = 899
+    e = 11
+    n = 899
     p, q = factorisation(n)
-    phiN = p * q
+    phiN = (p-1) * (q-1)
     d = inv_mod(e, phiN)
     print('p =', p, 'q =', q, 'phiN =', phiN, 'd =', d)
     print('encrypted message :', ciphertext)
@@ -132,7 +132,7 @@ c1 = pow(m,e1,n1) <=> 208 = pow(m,3,391)
 c2 = pow(m,e2,n2) <=> 38 = pow(m,3,55)
 c3 = pow(m,e3,n3) <=> 32 = pow(m,3,87)
 -------------------------------------------
-Chinese Reminder Theorem :
+Chinese Remainder Theorem :
 X ≡ 
     x1 = a1 mod M1
     x2 = a2 mod M2
@@ -199,7 +199,7 @@ def exercise4():
     print('Kp2 (', n2, ';', e, ') \t| e =', e, 'n2 =', n2, ' | c2 =', c2)
     print('Kp3 (', n3, ';', e, ') \t| e =', e, 'n3 =', n3, ' | c3 =', c3)
     print('-------------------------------------------')
-    print('Chinese Reminder Theorem :')
+    print('Chinese Remainder Theorem :')
     print('X = [a1*m1*pow(M1,-1) + a2*m2*pow(M2,-1) + a3*m3*pow(M3,-1)] mod n1*n2*n3')
     print('Thanks to this theorem we can say that :')
     print('c = pow(m,e)')
@@ -313,11 +313,30 @@ def exercise5():
     print('m =', pow(x * y, 1, n))
 
 
+'''
+Excercise 6 :
+2/ 
+We know : c = pow(m,e) mod n
+We have to prove : pow(c,pow(e,k-1)) = m mod n      # for such an integer k
+
+With the equation : c = pow(m,e) mod n
+We can say : pow(c,pow(e,k)) = c mod n
+
+Thanks to Euler's Theorem we can say : pow(e,k) = 1 mod φ(n)
+If we divide by e we have : pow(e,k-1) = pow(e,-1) mod φ(n)
+<=> pow(e,k-1) = d mod φ(n)
+
+Moreover we have : pow(c,pow(e,k-1)) = pow(c,d)
+And we know pow(c,d) = m mod n      # decryption
+Thanks to this, we can conclude : pow(c,pow(e,k-1)) = m mod n       # for such an integer k
+'''
+
+
 def main():
     # exercise1()
-    # exercise2()
+    exercise2()
     # exercise4()
-    exercise5()
+    # exercise5()
 
 
 if __name__ == "__main__":
