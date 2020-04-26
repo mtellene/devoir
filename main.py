@@ -78,26 +78,6 @@ def decrypt(C, d, n):
     return M
 
 
-# function of exercise 1
-def exercise1():
-    message = "110100110110111"
-    chiffre = int(message, 2)  # convert the binary string to int
-
-    p, q, n, phiN, e = function1(chiffre)
-    while pgcd(e, phiN) != 1:  # pgcd(e, phiN) must be 1
-        p, q, n, phiN, e = function1(chiffre)
-    d = inv_mod(e, phiN)
-    print('p =', p, ' q =', q, 'n =', n, ' phiN =', phiN, ' e =', e, ' d =', d)
-    print('-------------------------------------------')
-    C = encrypt(chiffre, e, n)
-    D = decrypt(C, d, n)
-    print(message, 'equals to', chiffre, '(from binary string to int)')
-    print(chiffre, 'encrypted equals to', C)
-    '''print("Verification :")
-    print(C, 'decrypted equals to', D)
-    print(D, 'equals to', "{0:b}".format(D), '(from int to binary string)')  # "{0:b}".format(D) allows to convert int to binary'''
-
-
 # get p and q with n
 def factorisation(n):
     p = n - 2
@@ -327,8 +307,7 @@ Thanks to this we can conclude : pow(c,pow(e,k-1)) = m mod n       # for such an
 
 
 def main():
-    exercise1()
-    # exercise4()
+    exercise4()
     # exercise5()
 
 
