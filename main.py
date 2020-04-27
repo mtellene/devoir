@@ -150,42 +150,6 @@ def exercise4():
     print('<=> m =', round(m))
 
 
-'''
-Exercise 5 :
-Kp1 (493;3) | e1 = 3 | n1 = 493
-Kp2 (493,5) | e2 = 5 | n2 = 493
-You can say : c1 = pow(m,e1,n1) and c2 = pow(m,e2,n2)
-Moreover gcd(e1,e2) = 1
--------------------------------------------
-Thanks to Bachet-Bézout, you can say : e1*u + e2*v = 1, Ǝ(u,v) ∈ ℤ²
-<=> pow(c1,u) mod n + pow(c2,v) mod n   = ((pow(pow(m,e1),u)) mod n + (pow(pow(p,e2),v)) mod n) mod n 
-                                        = pow(m,e1*u + e2*v) mod n
-                                        = m mod n (e1*u + e2*v = 1) 
-                                        = m (m<=n)
-
-We can conclude with : m = (pow(c1,u) * pow(c2,v)) mod n 
--------------------------------------------
-To find u and v we have to calculate the multiplicative inverse :
-The formula is : t = t1*(q*t2)
-q   r   r1  r2      t1  t2  t
-1   5   3   2       0   1  -1
-1   3   2   1       1  -1   2
-2   2   1   0      -1   2  -5
-    1   0           2  -5
-    
-Thanks to this we can say u = 2 (last t1) and v = -1 (third t1)
-We can verify with Bachet-Bézout : e1*u + e2*v = 1
-<=> 3*2 + 5*(-1) = 1
-<=> 6 - 5 = 1
-------------------------------------------- 
-Now let's find m :
-m = pow(e1,u) * pow(e2,v) mod n
-<=> m = pow(291,2) + pow(421,-1) mod n
-<=> m = pow(291,2) + 89 mod n
-<=> m = 47
-'''
-
-
 # function for exercise 5
 def exercise5():
     n = 493
