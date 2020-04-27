@@ -24,12 +24,12 @@ def pgcd(a, b):
 
 # generate 2 8-bits prime numbers
 def getPAndQ():
-    p = random.randint(1, (pow(2, 8))-1)  # random int between 1 and 2⁸-1
-    q = random.randint(1, (pow(2, 8))-1)  # random int between 1 and 2⁸-1
+    p = random.randint(1, (pow(2, 8)) - 1)  # random int between 1 and 2⁸-1
+    q = random.randint(1, (pow(2, 8)) - 1)  # random int between 1 and 2⁸-1
     while not isPrime(p):  # while p is not prime
-        p = random.randint(1, (pow(2, 8))-1)
+        p = random.randint(1, (pow(2, 8)) - 1)
     while not isPrime(q):  # while q is not prime
-        q = random.randint(1, (pow(2, 8))-1)
+        q = random.randint(1, (pow(2, 8)) - 1)
     return p, q
 
 
@@ -45,25 +45,17 @@ def function1(chiffre):
 
 
 # compute the private key d
-def inv_mod(e, phiN):
+def inv_mod(e, phiN, nbReturn):
     r, u, v, r1, u1, v1 = e, 1, 0, phiN, 0, 1
     while r1:  # while r1 !=0
         q = r // r1
         r, r1 = r1, r - q * r1  # r take r1 value
         u, u1 = u1, u - q * u1  # u take u1 value
         v, v1 = v1, v - q * v1  # v take v1 value
-    return u % phiN
-
-
-# multiplicative inverse
-def inv_modForExercise5(e, phiN):
-    r, u, v, r1, u1, v1 = e, 1, 0, phiN, 0, 1
-    while r1:  # while r1 !=0
-        q = r // r1
-        r, r1 = r1, r - q * r1  # r take r1 value
-        u, u1 = u1, u - q * u1  # u take u1 value
-        v, v1 = v1, v - q * v1  # v take v1 value
-    return u % phiN, v
+    if nbReturn == "1":
+        return u % phiN
+    elif nbReturn == "2":
+        return u % phiN, v
 
 
 # encrypt message
@@ -85,56 +77,6 @@ def factorisation(n):
         p = p - 2  # 2 by 2 -> faster
     q = int(n / p)
     return p, q
-
-
-'''
-Exercise 4 :
-Kp1 (391;3) | e1 = 3 | n1 = 391 | c1 = 208  
-Kp2 (55;3)  | e2 = 3 | n2 = 55  | c2 = 38
-Kp3 (87;3)  | e3 = 3 | n3 = 87  | c3 = 32
--------------------------------------------
-We know that :
-c1 = pow(m,e1,n1) <=> 208 = pow(m,3,391)
-c2 = pow(m,e2,n2) <=> 38 = pow(m,3,55)
-c3 = pow(m,e3,n3) <=> 32 = pow(m,3,87)
--------------------------------------------
-Chinese Remainder Theorem :
-X ≡ 
-    x1 = a1 mod M1
-    x2 = a2 mod M2
-    x3 = a3 mod M3
-X = [a1*m1*pow(M1,-1) + a2*m2*pow(M2,-1) + a3*m3*pow(M3,-1)] mod n1*n2*n3
--------------------------------------------
-In our case : 
-c1 = pow(m,3,n1)
-c2 = pow(m,3,n2)
-c3 = pow(m,3,n3)
-
-<=> c = pow(m,3) 
-<=> X = c
-<=> X = pow(m,3)
-<=> m = pow(X,1.0/3.0) (message equals to cube root of X)
-
-m1 = n2*n3 | m2 = n1*n3 | m3 = n1*n2
-M1 = m1 mod n1 | M2 = m2 mod n2 | M3 = m3 mod n3
-
-X = [c1*m1*pow(M1,-1) + c2*m2*pow(M2,-1) + c3*m3*pow(M3,-1)] mod n1*n2*n3
-<=> X = [208*4785*pow(4785,-1,391) + 38*34017*pow(34017,-1,55) + 32*21505*pow(21505,-1,87)] mod 1870935
-<=> X = [208*4785*pow(93,-1,391) + 38*34017*pow(27,-1,55) + 32*21505*pow(16,-1,87)] mod 1870935
-
-pow(93,-1,391) = 185
-pow(27,-1,55) = 53
-pow(16,-1,87) = 49
-
-<=> X = [208*4785*185 + 38*34017*53 + 32*21505*49] mod 1870935
-<=> X = [184126800 + 68510238 + 33719840] mod 1870935
-<=> X = 286356878 mod 1870935
-<=> X = 103823
-
-We said : m = pow(X,1.0/3.0) 
-<=> m = pow(103823,1.0/3.0) 
-<=> m = 47
-'''
 
 
 # get a round of n
@@ -188,9 +130,9 @@ def exercise4():
         Nm3 = nModM(m3, n3)
     print('X = [', c1, '*', m1, '*pow(', Nm1, ',-1,', n1, ') + ', c2, '*', m2, '*pow(', Nm2, ',-1,', n2, ') + '
           , c3, '*', m3, '*pow(', Nm3, ',-1,', n3, ')] mod', modGene)
-    Nm1 = (inv_mod(Nm1, n1))
-    Nm2 = (inv_mod(Nm2, n2))
-    Nm3 = (inv_mod(Nm3, n3))
+    Nm1 = (inv_mod(Nm1, n1, "1"))
+    Nm2 = (inv_mod(Nm2, n2, "1"))
+    Nm3 = (inv_mod(Nm3, n3, "1"))
     print('X = [', c1, '*', m1, '*', Nm1, '+', c2, '*', m2, '*', Nm2, '+', c3, '*', m3, '*', Nm3, '] mod', n1 * n2 * n3)
     a1, a2, a3 = c1 * m1 * Nm1, c2 * m2 * Nm2, c3 * m3 * Nm3
     print('X = [', a1, '+', a2, '+', a3, '] mod', modGene)
@@ -201,8 +143,8 @@ def exercise4():
     print('We said that :')
     print('X = pow(m,3)')
     print('<=> pow(m,3) =', X)
-    print('<=> m = pow(X,1.0/e')
-    print('<=> m = pow(', X, '1.0/', e, ')')
+    print('<=> m = pow(X,1.0/e)')
+    print('<=> m = pow(', X, ', 1.0/', e, ')')
     m = pow(X, 1.0 / e)
     print('<=> m =', m)
     print('<=> m =', round(m))
@@ -269,9 +211,9 @@ def exercise5():
     print('Now we know u, v and m = (pow(c1,u) * pow(c2,v)) mod n')
     print('So we can compute m')
     print('m = (pow(c1,u) * pow(c2,v)) mod n')
-    u, v = inv_modForExercise5(e1, e2)
+    u, v = inv_mod(e1, e2, "2")
     print('m = (pow(', c1, ',', u, ') * pow(', c2, ',', v, ')) mod', n)
-    x = inv_mod(c2, n)  # pow(c2,v) because v = -1
+    x = inv_mod(c2, n, "1")  # pow(c2,v) because v = -1
     print('m = (pow(', c1, ',', u, ') *', x, ') mod', n)
     y = pow(c1, u)
     print('m = (', y, '*', x, ') mod', n)
@@ -307,8 +249,8 @@ Thanks to this we can conclude : pow(c,pow(e,k-1)) = m mod n       # for such an
 
 
 def main():
-    exercise4()
-    # exercise5()
+    # exercise4()
+    exercise5()
 
 
 if __name__ == "__main__":
