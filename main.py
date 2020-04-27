@@ -185,33 +185,6 @@ def exercise5():
     print('m =', pow(x * y, 1, n))
 
 
-'''
-Excercise 6 :
-1/
-We have to prove : pow(m,pow(e,k)) = m mod n      # for a positive integer k
-We can say : pow(m,pow(e,k)) = pow(pow(m,e),d)
-<=> pow(pow(m,e),d) = pow(c,d)
-<=> pow(c,d) = m
-
-Thanks to this we can conclude :  pow(m,pow(e,k)) = m mod n      # for a positive integer k
--------------------------------------------
-2/ 
-We know : c = pow(m,e) mod n
-We have to prove : pow(c,pow(e,k-1)) = m mod n      # for such an integer k
-
-With the equation : c = pow(m,e) mod n
-We can say : pow(c,pow(e,k)) = c mod n
-
-Thanks to Euler's Theorem we can say : pow(e,k) = 1 mod φ(n)
-If we divide by e we have : pow(e,k-1) = pow(e,-1) mod φ(n)
-<=> pow(e,k-1) = d mod φ(n)
-
-Moreover we have : pow(c,pow(e,k-1)) = pow(c,d)
-And we know pow(c,d) = m mod n      # decryption
-Thanks to this we can conclude : pow(c,pow(e,k-1)) = m mod n       # for such an integer k
-'''
-
-
 def main():
     # exercise4()
     exercise5()
